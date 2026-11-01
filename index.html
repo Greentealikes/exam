@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考試加油！金榜題名！</title>
+    <style>
+        :root {
+            --primary: #fee9b4;
+            --secondary: #fb8500;
+            --bg-start: #1a1a2e;
+            --bg-end: #16213e;
+            --text: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 粒子背景 */
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,183,3,1) 0%, rgba(255,183,3,0) 70%);
+            border-radius: 50%;
+            animation: float Up linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 主要內容容器 */
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        /* 標題動畫 */
+        h1 {
+            font-size: 3rem;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(255, 183, 3, 0.6);
+            margin-bottom: 0.5rem;
+            animation: pulse 2s infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8ecae6;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 20px rgba(255, 183, 3, 0.6); }
+            100% { transform: scale(1.05); text-shadow: 0 0 35px rgba(255, 183, 3, 0.9); }
+        }
+
+        /* 祝福卡片 */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2.5rem;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+            min-height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card.fade-out {
+            transform: scale(0.9) translateY(-10px);
+            opacity: 0;
+        }
+
+        .card.fade-in {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        #blessing-text {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            font-weight: bold;
+            background: linear-gradient(to right, #ffffff, #ffb703);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 互動按鈕 */
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(251, 133, 0, 0.4);
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(251, 133, 0, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 漂浮粒子背景 -->
+    <div id="particles"></div>
+
+    <!-- 主要內容 -->
+    <div class="container">
+        <h1>考試加油！</h1>
+        <p class="subtitle">應試順利 • 金榜題名</p>
+
+        <!-- 祝福語卡片 -->
+        <div class="card" id="blessing-card">
+            <p id="blessing-text">點擊下方按鈕，領取專屬考試好運！</p>
+        </div>
+
+        <!-- 互動按鈕 -->
+        <button class="btn" onclick="nextBlessing()">抽取幸運祝福語</button>
+    </div>
+
+    <script>
+        // 祝福語資料庫
+        const blessings = [
+            "✨ 乾坤未定，你我皆是黑馬！✨",
+            "📖 願你合上筆蓋的剎那，有著俠客收劍入鞘的驕傲！",
+            "💯 沉著應戰，穩紮穩打，相信自己的實力！",
+            "🌟 越努力越幸運，所有的付出都將化為最耀眼的成績！",
+            "🚀 保持平常心，發揮出你最好的水準，衝吧！",
+            "💪 輕裝上陣，告別焦慮。你流過的汗水，不會辜負你！",
+            "🏆 祝你考場上靈感湧現，下筆如有神，金榜題名！",
+            "🎯 專注當下，每一步都走得堅定，好運與你同行！",
+            "🌈 關關難過關關過，前途似海，來日方長！",
+	    "✨ 踏實地走好每一步，就是成功的起點。✨ ",
+	    "💪願你的筆如思緒般流暢。",
+	    "🌟放輕鬆，相信你投入的每一個小時，你比自己想像的更準備好。"
+        ];
+
+        let lastIndex = -1;
+
+        // 切換祝福語的動態效果
+        function nextBlessing() {
+            const card = document.getElementById('blessing-card');
+            const textElement = document.getElementById('blessing-text');
+            
+            // 漸隱動畫
+            card.classList.add('fade-out');
+            
+            setTimeout(() => {
+                // 隨機抽選（確保不連續重複）
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * blessings.length);
+                } while (randomIndex === lastIndex);
+                
+                lastIndex = randomIndex;
+                
+                // 更換文字並漸顯
+                textElement.innerHTML = blessings[randomIndex];
+                card.classList.remove('fade-out');
+                card.classList.add('fade-in');
+                
+                // 清除暫時的 class
+                setTimeout(() => {
+                    card.classList.remove('fade-in');
+                }, 400);
+            }, 400);
+        }
+
+        // 動態生成粒子
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 隨機大小、位置、速度與延遲
+                const size = Math.random() * 6 + 2;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 8 + 6;
+                const delay = Math.random() * -15; // 負延遲讓粒子一開始就散佈在螢幕上
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // 初始化背景
+        createParticles();
+    </script>
+</body>
+</html>
